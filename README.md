@@ -10,6 +10,7 @@ Groups are expected to:
 Group Info
 =======================
 
-* Name 1 (ID1)
-* Name 2 (ID2)
-
+Vu Hoang Linh (BI6-086)
+Dang Vinh Bao (BI6-017)
+Phung Duc Tuan (BI5-045)
+Nguyen Thanh Long (BI6-088)
