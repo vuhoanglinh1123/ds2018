@@ -1,0 +1,307 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{pstricks-add}
+\usepackage{listings}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{TCP File Transfer - Labwork 1}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{Protocol Design}
+\begin{center}
+\begin{figure}[htp]
+\begin{center}
+\newrgbcolor{wrwrwr}{0.4 0.4 0.4}
+\psset{xunit=0.4cm,yunit=0.4cm,algebraic=true,dotstyle=o,dotsize=3pt 0,linewidth=0.8pt,arrowsize=3pt 2,arrowinset=0.25}
+\begin{pspicture*}(-15.9,-40.9)(24.9,7.2)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,2)(-6,4)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,2)(0,2)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,4)(0,4)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,4)(0,2)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,2)(10,4)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,2)(16,2)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,4)(16,4)
+\psline[linewidth=2pt,linecolor=wrwrwr](16,4)(16,2)
+\rput[tl](-5.7,6.6){\textbf{Server}}
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-8)(10,-10)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-8)(16,-8)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-10)(16,-10)
+\psline[linewidth=2pt,linecolor=wrwrwr](16,-10)(16,-8)
+\rput[tl](10.9,6.6){\textbf{Client}}
+\rput[tl](-4.5,3.6){socket}
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,0)(0,0)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-2)(0,0)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,0)(-6,-2)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-2)(0,-2)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-4)(0,-4)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-6)(0,-4)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-4)(-6,-6)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-6)(-6,-6)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-4)(0,-4)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-6)(-6,-6)
+\rput[tl](-3.8,-0.4){bind}
+\rput[tl](-4.2,-4.3){listen}
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-8)(0,-8)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-10)(0,-8)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-10)(0,-10)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-8)(-6,-10)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-24)(-6,-26)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-24)(0,-24)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-26)(0,-26)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-26)(0,-24)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-14)(10,-12)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-14)(16,-14)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-12)(16,-12)
+\psline[linewidth=2pt,linecolor=wrwrwr](16,-12)(16,-14)
+\rput[tl](-4.2,-8.2){accept}
+\rput[tl](11.5,-8.1){connect}
+\rput[tl](11.4,3.7){socket}
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-24)(10,-26)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-24)(16,-24)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-26)(16,-26)
+\psline[linewidth=2pt,linecolor=wrwrwr](16,-26)(16,-24)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-18)(10,-16)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-18)(16,-18)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-16)(16,-16)
+\psline[linewidth=2pt,linecolor=wrwrwr](16,-16)(16,-18)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-22)(10,-20)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-22)(16,-22)
+\psline[linewidth=2pt,linecolor=wrwrwr](10,-20)(16,-20)
+\psline[linewidth=2pt,linecolor=wrwrwr](16,-20)(16,-22)
+\rput[tl](10.1,-12.3){scan file name}
+\rput[tl](11.4,-16.2){open file}
+\rput[tl](11.6,-20.2){read file}
+\rput[tl](11.1,-24.4){write file}
+\rput[tl](-4.7,-24.4){read file}
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-28)(-6,-30)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-28)(0,-28)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-30)(0,-30)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-30)(0,-28)
+\rput[tl](-6.2,-28.2){open output file}
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-32)(-6,-34)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-32)(0,-32)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-34)(0,-34)
+\psline[linewidth=2pt,linecolor=wrwrwr](0,-34)(0,-32)
+\rput[tl](-5.7,-32.2){write into file}
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(-3,2)(-3,0)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(-3,-2)(-3,-4)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(-3,-6)(-3,-8)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(10,-9)(0,-9)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(13,2)(13,-8)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(13,-10)(13,-12)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(13,-14)(13,-16)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(13,-18)(13,-20)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(13,-22)(13,-24)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(10,-25)(0,-25)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(-3,-26)(-3,-28)
+\psline[linewidth=2pt,linecolor=wrwrwr]{->}(-3,-30)(-3,-32)
+\psline[linewidth=2pt,linestyle=dotted,linecolor=wrwrwr]{->}(-3,-34)(-3,-36)
+\psline[linewidth=2pt,linestyle=dotted,linecolor=wrwrwr]{->}(13,-26)(13,-36)
+\psline[linewidth=2pt,linecolor=wrwrwr](-8,4)(-8,-10)
+\psline[linewidth=2pt,linecolor=wrwrwr](18,4)(18,-10)
+\psline[linewidth=2pt,linecolor=wrwrwr](18,4)(18,-10)
+\psline[linewidth=2pt,linecolor=wrwrwr](-8,4)(-8,-10)
+\rput[tl](18.3,-2.2){open clientfd}
+\rput[tl](-14,-2.3){open listenfd}
+\rput[tl](0.3,-6.7){Connection Request}
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-36)(-6,-40)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-36)(16,-36)
+\psline[linewidth=2pt,linecolor=wrwrwr](-6,-40)(16,-40)
+\psline[linewidth=2pt,linecolor=wrwrwr](16,-40)(16,-36)
+\psline[linewidth=2pt,linecolor=wrwrwr](-8,-11)(-8,-35)
+\psline[linewidth=2pt,linecolor=wrwrwr](-8,-11)(17,-11)
+\psline[linewidth=2pt,linecolor=wrwrwr](-8,-35)(17,-35)
+\psline[linewidth=2pt,linecolor=wrwrwr](17,-35)(17,-11)
+\rput[tl](-14.4,-21.9){Client/Server}
+\rput[tl](-12.2,-23.2){Session}
+\rput[tl](3.6,-23){to server}
+\rput[tl](-1.6,-37.1){more Client/Server Sessions}
+\end{pspicture*}
+\end{center}
+\caption{Protocol Deisgn}
+\end{figure}
+\end{center}
+\section{System Organization}
+\begin{center}
+\begin{figure}[htp]
+\begin{center}
+\begin{pspicture*}(-6.7,-4.4)(6.3,9)
+\pscircle(-4,2.5){0.3}
+\psline(-4,2.1)(-4,0.8)
+\psline(-4,0.8)(-4.6,0.1)
+\psline(-3.4,0.1)(-4,0.8)
+\psline(-4.5,1.5)(-4,1.8)
+\psline(-3.5,1.4)(-4,1.8)
+\pscircle(4,2.5){0.3}
+\psline(4,2.1)(4,0.8)
+\psline(4,0.8)(3.4,0.1)
+\psline(4.6,0.1)(4,0.8)
+\psline(3.5,1.4)(4,1.8)
+\psline(4.5,1.4)(4,1.8)
+\rput{-0.4}(0,7.1){\psellipse(0,0)(1.5,0.6)}
+\rput[tl](-0.5,7.3){send}
+\rput{-0.4}(0.2,5.2){\psellipse(0,0)(1.5,0.6)}
+\rput[tl](-0.4,5.4){read}
+\rput{-0.4}(0.2,3.5){\psellipse(0,0)(1.5,0.6)}
+\rput[tl](-0.4,3.7){open}
+\rput{-0.4}(0.1,1.8){\psellipse(0,0)(1.5,0.6)}
+\rput[tl](-0.4,2){bind}
+\rput{-0.4}(0.1,0.2){\psellipse(0,0)(1.5,0.6)}
+\rput[tl](-0.4,0.4){listen}
+\rput{-0.4}(0.1,-1.4){\psellipse(0,0)(1.5,0.6)}
+\rput[tl](-0.5,-1.2){fork}
+\rput{-0.4}(0.1,-3){\psellipse(0,0)(1.5,0.6)}
+\rput[tl](-0.5,-2.8){write}
+\rput[tl](-4.8,-0.1){\textbf{Server}}
+\rput[tl](3.4,-0.1){\textbf{Client}}
+\psline(-3.2,0.9)(-1.4,1.8)
+\psline(-3.2,0.9)(-1.4,0.2)
+\psline(-3.2,0.9)(-1.3,3.3)
+\psline(-3.2,0.9)(-1.4,5.2)
+\psline(-3.2,0.9)(-1.5,7.1)
+\psline(-3.2,0.9)(-1.4,-1.1)
+\psline(-3.2,0.9)(-1.5,-3)
+\psline(3,1.5)(1.7,3.5)
+\psline(3,1.5)(1.6,-3)
+\psline(3,1.5)(1.7,5.2)
+\psline(3,1.5)(1.6,7.1)
+\end{pspicture*}
+\end{center}
+\caption{System Organization}
+\end{figure}
+\end{center}
+\section{Code Snippet}
+\subsection*{$client.chat$}
+\begin{lstlisting}
+$while (1) {
+        // after connected, it's client turn to chat
+        do {
+            printf("client> Enter file path: ");
+            scanf("%s", s);
+            input_file = s;
+
+            // Open the input file
+            filefd = open(input_file, O_RDONLY);
+            if (filefd == -1) {
+                perror("open");
+            }
+
+        } while (filefd == -1);
+
+        // Read the input file
+        read_return = read(filefd, buffer, BUFSIZ);
+        if (read_return == -1) {
+            perror("read");
+        }
+        
+        // Send data to the SERVER
+        write_return = write(serv, buffer, read_return);
+        if (write_return == -1) {
+            perror("write");
+        }
+
+        close(filefd);
+
+        // Read the data received from the SERVER
+        read_return = read(serv, buffer, BUFSIZ);
+        if (read_return == -1) {
+            perror("read");
+        } else {
+            printf("Received!\n");
+        }
+
+        // Open the output file
+        filefd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);     
+        if (filefd == -1) {
+            perror("open");
+        }
+
+        // Write to the output file
+        write_return = write(filefd, buffer, read_return);
+        if (write_return == -1) {
+            perror("write");
+        }
+
+        close(filefd);
+    }$
+\end{lstlisting}
+\subsection*{$server.chat$}
+\begin{lstlisting}
+while (1) {
+        // an incoming connection
+        cli = accept(ss, (struct sockaddr *)&ad, &ad_length);
+
+        pid = fork();
+        if (pid == 0) {
+            // I'm the son, I'll serve this client
+            printf("Client connected\n");
+
+            while (1) {
+                // it's client turn to chat, I wait and read message from client
+
+                // Read the data received from the CLIENT
+                read_return = read(cli, buffer, BUFSIZ);
+                if (read_return == -1) {
+                    perror("read");
+                } else {
+                    printf("Received!\n");
+                }
+
+                // Open the output file
+                filefd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);     
+                if (filefd == -1) {
+                    perror("open");
+                }
+
+                // Write to the output file
+                write_return = write(filefd, buffer, read_return);
+                if (write_return == -1) {
+                    perror("write");
+                }
+                close(filefd);
+
+                do {
+                    printf("server> Enter file path: ");
+                    scanf("%s", s);
+                    input_file = s;
+
+                    // Open the input file
+                    filefd = open(input_file, O_RDONLY);
+                    if (filefd == -1) {
+                        perror("open");
+                    }
+
+                } while (filefd == -1);
+
+                // Read the input file
+                read_return = read(filefd, buffer, BUFSIZ);
+
+                if (read_return == -1) {
+                    perror("read");
+                }
+
+                // Send data to the CLIENT
+                write_return = write(cli, buffer, read_return);
+                if (write_return == -1) {
+                    perror("write");
+                }
+
+                close(filefd);
+            }
+
+            return 0;
+        } else {
+            // I'm the father, continue the loop to accept more clients
+            continue;
+        }
+    }
+\end{lstlisting}
+\section{Who do what?}
+Code Implement: Dang Vinh Bao, Vu Hoang Linh, Phung Duc Tuan \\LaTeX report: Nguyen Thanh Long
+
+\end{document}
