@@ -1,28 +1,42 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <fcntl.h>
 
+const char* RECEIVED_TITLE= "0";
+const char* RECEIVED_SIZE= "1";
+const char* RECEIVED_FILE= "2";
+
+int file_size(char * fName);
+
 int main() {
-    int ss, cli, pid;
-    struct sockaddr_in ad;
-    char buffer[BUFSIZ];
+
+    //buffer to store content
+    char * buffer;
+    long int buffer_size;
+    //
     char s[100];
-
-    socklen_t ad_length = sizeof(ad);
-
+    char msg[100];
+    char b_size[100];
     //read file
     ssize_t read_return;
     ssize_t write_return;
 
+
+    int ss, cli, pid;
+    struct sockaddr_in ad;
+
+    socklen_t ad_length = sizeof(ad);    
+
     //open the file to send
     int filefd;
     char *input_file;
-    char *output_file = "output.png";
+    char output_file[100];
 
     // create the socket
     ss = socket(AF_INET, SOCK_STREAM, 0);
@@ -50,15 +64,33 @@ int main() {
             printf("Client connected\n");
 
             while (1) {
-                // it's client turn to chat, I wait and read message from client
+                printf("Wait for title\n");
+                //wait for file name
+                read(cli, output_file, sizeof(output_file));
+                printf("Received title! %s\n", output_file);
 
+                //return comfirmation
+                write(cli, RECEIVED_TITLE, strlen(RECEIVED_TITLE) + 1);
+                
+                //wait for file size
+                read(cli, b_size, strlen(b_size) + 1);
+                printf("Received buffer size!\n");
+
+                buffer_size = atol(b_size);
+                buffer = (char*) malloc(buffer_size + 1);
+                //return comfirmation
+                printf("%ld\n", buffer_size);
+                write(cli, RECEIVED_SIZE, strlen(RECEIVED_SIZE) + 1);
+                
                 // Read the data received from the CLIENT
-                read_return = read(cli, buffer, BUFSIZ);
+                read_return = read(cli, buffer, buffer_size);
                 if (read_return == -1) {
                     perror("read");
                 } else {
                     printf("Received!\n");
                 }
+
+                printf("%ld\n", read_return);
 
                 // Open the output file
                 filefd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);     
@@ -71,36 +103,8 @@ int main() {
                 if (write_return == -1) {
                     perror("write");
                 }
-
                 close(filefd);
 
-                do {
-                    printf("server> Enter file path: ");
-                    scanf("%s", s);
-                    input_file = s;
-
-                    // Open the input file
-                    filefd = open(input_file, O_RDONLY);
-                    if (filefd == -1) {
-                        perror("open");
-                    }
-
-                } while (filefd == -1);
-
-                // Read the input file
-                read_return = read(filefd, buffer, BUFSIZ);
-
-                if (read_return == -1) {
-                    perror("read");
-                }
-
-                // Send data to the CLIENT
-                write_return = write(cli, buffer, read_return);
-                if (write_return == -1) {
-                    perror("write");
-                }
-
-                close(filefd);
             }
 
             return 0;
@@ -111,4 +115,23 @@ int main() {
     }
     // disconnect
     close(cli);
+}
+
+int file_size(char * fName){
+	long int size;
+	FILE * pFile;
+
+	pFile = fopen(fName,"r");
+	
+	if(pFile == NULL){
+		printf("Can't find file\n");
+		fclose(pFile);
+		return -1;
+	}
+
+	fseek(pFile, 0, SEEK_END);
+	size = ftell(pFile);
+
+	fclose(pFile);
+	return size;
 }
