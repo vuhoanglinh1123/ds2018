@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
         //snippet start
         // after connected, it's client turn to chat
         do {
-            printf("client> Enter file path: ");
+            printf("\nclient> Enter file path: ");
             scanf("%s", s);
             input_file = s;
 
@@ -70,7 +70,7 @@ int main(int argc, char* argv[]) {
         close(filefd);
         //send file name
         write(serv, input_file, strlen(input_file) + 1);
-        printf("Send title...\n");
+        printf("Sending title...\n");
         //wait for response msg
         read(serv, msg, sizeof(msg));
 
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
            continue;
         }
 
-        printf("Received comfirmation!\n");
+        printf("Title confirmed!\n");
          //find file size
         buffer_size = file_size(input_file);
         buffer = (char*) malloc(buffer_size + 1);
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 
         write(serv, b_size, strlen(b_size));
 
-        printf("Send file size...\n");
+        printf("Sending file size...\n");
         //wait for response
         read(serv, msg, sizeof(msg));
         
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
         if(strcmp(msg,RECEIVED_SIZE) != 0){
             continue;
         }
-        printf("Received comfirmation!\n");
+        printf("File size confirmed!\n");
 
         //sending file
         filefd = open(input_file, O_RDONLY);
@@ -115,7 +115,7 @@ int main(int argc, char* argv[]) {
         if (write_return == -1) {
             perror("write");
         }
-        printf("Send file...\n");
+        printf("Sending file...\n");
         
         close(filefd);
 
@@ -131,7 +131,7 @@ int file_size(char * fName){
     pFile = fopen(fName,"r");
     
     if(pFile == NULL){
-        printf("Can't find file\n");
+        printf("File not found!\n");
         fclose(pFile);
         return -1;
     }

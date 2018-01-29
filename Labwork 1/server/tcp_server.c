@@ -64,21 +64,21 @@ int main() {
             printf("Client connected\n");
 
             while (1) {
-                printf("Wait for title\n");
+                printf("\nserver> Waiting...\n");
                 //wait for file name
                 read(cli, output_file, sizeof(output_file));
-                printf("Received title! %s\n", output_file);
+                printf("Received title!\n%s\n", output_file);
 
                 //return comfirmation
                 write(cli, RECEIVED_TITLE, strlen(RECEIVED_TITLE) + 1);
                 
                 //wait for file size
                 read(cli, b_size, strlen(b_size) + 1);
-                printf("Received buffer size!\n");
+                printf("Received file size!\n");
 
                 buffer_size = atol(b_size);
                 buffer = (char*) malloc(buffer_size + 1);
-                //return comfirmation
+                //return confirmation
                 printf("%ld\n", buffer_size);
                 write(cli, RECEIVED_SIZE, strlen(RECEIVED_SIZE) + 1);
                 
@@ -87,7 +87,7 @@ int main() {
                 if (read_return == -1) {
                     perror("read");
                 } else {
-                    printf("Received!\n");
+                    printf("Received file!\n");
                 }
 
                 printf("%ld\n", read_return);
