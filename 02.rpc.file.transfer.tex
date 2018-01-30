@@ -1,0 +1,42 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\pagestyle{headings}
+\title{Report 3}
+
+\begin{document}
+1. Organize your system
+
+Protocol
+
+\includegraphics[scale=0.7]{report2_rpc.png}
+
+2. Rpc service:
+
+Complier: rpcgen –C -a
+
+No special data structure
+
+3 stub functions:
+
+Int send name(string); to send the file name from client to server
+
+Int send size(long int); to send the file size from client to server
+
+Int send buffer(string); to send the buffer from client to server
+
+All 3 functions above return a number 1 if success
+
+Result:
+Can only successfully send text file
+
+More than one client connect at a time can create bug
+
+
+\end{document}
+
+
