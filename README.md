@@ -11,6 +11,9 @@ Group Info
 =======================
 
 Vu Hoang Linh (BI6-086)
+
 Dang Vinh Bao (BI6-017)
+
 Phung Duc Tuan (BI5-045)
+
 Nguyen Thanh Long (BI6-088)
