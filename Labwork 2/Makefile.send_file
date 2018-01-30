@@ -3,7 +3,7 @@
 
 # Parameters
 
-CLIENT = send_file_client
+CLIENT = client/send_file_client
 SERVER = send_file_server
 
 SOURCES_CLNT.c = 
