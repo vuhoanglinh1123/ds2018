@@ -101,5 +101,5 @@ main (int argc, char *argv[])
 	}
 	host = argv[1];
 	send_file_prog_1 (host);
-exit (0);
+	exit (0);
 }
