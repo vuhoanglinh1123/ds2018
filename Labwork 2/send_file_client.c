@@ -56,12 +56,12 @@ send_file_prog_1(char *host)
 
 	//get file size
 	fseek(fp, 0, SEEK_END);
-    file_size = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-    //malloc
-    file_buffer = (char*)malloc(file_size+1);
+	file_size = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	//malloc
+	file_buffer = (char*)malloc(file_size+1);
 
-    //send file size
+	//send file size
 	result_2 = send_size_1(&file_size, clnt);
 	if (result_2 == (int *) NULL) {
 		clnt_perror (clnt, "call failed");
