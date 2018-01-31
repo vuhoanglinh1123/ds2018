@@ -98,6 +98,8 @@ int main(int argc, char **argv) {
 				MPI_Send(&send_length, 1, MPI_LONG, to_rank, send_tag, MPI_COMM_WORLD);
 				MPI_Send(send_mess, send_length, MPI_CHAR, to_rank, send_tag, MPI_COMM_WORLD);
 				
+				free(send_mess);
+
 				close(filefd);
 			}
 			
@@ -134,6 +136,8 @@ int main(int argc, char **argv) {
 			if (write_return == -1) {
 				perror("write");
 			}
+
+			free(recv_mess);
 
 			close(filefd);
 		}

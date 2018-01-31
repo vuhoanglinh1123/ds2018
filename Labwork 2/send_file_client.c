@@ -79,6 +79,8 @@ send_file_prog_1(char *host)
 	}else{
 		printf("The buffer is sent: %d\n", *result_3);
 	}
+
+	free(file_buffer);
 	
 	fclose(fp);
 
