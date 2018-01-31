@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 				} while(getchar() != '\n');
 
 			// Check if the file is valid.
-            		filefd = open(titles[to_rank-1], O_RDONLY);
+			filefd = open(titles[to_rank-1], O_RDONLY);
 			if (filefd == -1) {
 				perror("open");
 				to_rank--;
