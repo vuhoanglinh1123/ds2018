@@ -9,23 +9,23 @@
 #define send_tag 100
 #define recv_tag 101
 
-int file_size(char * fName){
-    long int size;
-    FILE * pFile;
+int file_size(char * fName) {
+	long int size;
+	FILE * pFile;
 
-    pFile = fopen(fName,"r");
+	pFile = fopen(fName,"r");
     
-    if(pFile == NULL){
-        printf("File not found!\n");
-        fclose(pFile);
-        return -1;
-    }
+	if(pFile == NULL){
+		printf("File not found!\n");
+		fclose(pFile);
+		return -1;
+	}
 
-    fseek(pFile, 0, SEEK_END);
-    size = ftell(pFile);
+	fseek(pFile, 0, SEEK_END);
+	size = ftell(pFile);
 
-    fclose(pFile);
-    return size;
+	fclose(pFile);
+	return size;
 }
 
 int main(int argc, char **argv) {
@@ -67,17 +67,17 @@ int main(int argc, char **argv) {
 					scanf("%s", titles[to_rank-1]);
 				} while(getchar() != '\n');
 
-				// Check if the file is valid.
-            	filefd = open(titles[to_rank-1], O_RDONLY);
-            	if (filefd == -1) {
-                	perror("open");
-                	to_rank--;
-            	}
+			// Check if the file is valid.
+            		filefd = open(titles[to_rank-1], O_RDONLY);
+			if (filefd == -1) {
+				perror("open");
+				to_rank--;
+			}
 
-            	to_rank++;
-            	close(filefd);
+			to_rank++;
+			close(filefd);
 
-            } while (filefd == -1 || to_rank < num_procs);
+			} while (filefd == -1 || to_rank < num_procs);
 			
 			printf("Sending titles and files...\n");
 			for(to_rank = 1; to_rank < num_procs; to_rank++) {
@@ -120,8 +120,8 @@ int main(int argc, char **argv) {
 
 			filefd = open(recv_mess, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
 			if (filefd == -1) {
-                perror("open");
-            }
+				perror("open");
+			}
 
 			// Receiving files...
 			MPI_Recv(&recv_length, 1, MPI_LONG, root_process, send_tag, MPI_COMM_WORLD, &status);
@@ -132,10 +132,10 @@ int main(int argc, char **argv) {
 
 			write_return = write(filefd, recv_mess, recv_length);
 			if (write_return == -1) {
-                perror("write");
-            }
+				perror("write");
+			}
 
-            close(filefd);
+			close(filefd);
 		}
 	}
 
