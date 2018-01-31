@@ -67,15 +67,15 @@ int main(int argc, char **argv) {
 					scanf("%s", titles[to_rank-1]);
 				} while(getchar() != '\n');
 
-			// Check if the file is valid.
-			filefd = open(titles[to_rank-1], O_RDONLY);
-			if (filefd == -1) {
-				perror("open");
-				to_rank--;
-			}
+				// Check if the file is valid.
+				filefd = open(titles[to_rank-1], O_RDONLY);
+				if (filefd == -1) {
+					perror("open");
+					to_rank--;
+				}
 
-			to_rank++;
-			close(filefd);
+				to_rank++;
+				close(filefd);
 
 			} while (filefd == -1 || to_rank < num_procs);
 			
