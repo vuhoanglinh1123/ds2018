@@ -1,4 +1,4 @@
-#Intruction
+#Instruction
 
 ##IDE
 We use Netbeans IDE to build the project because Netbeans is a powerful java IDE developed by oracle
