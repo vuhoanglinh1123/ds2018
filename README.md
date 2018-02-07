@@ -14,6 +14,6 @@ Vu Hoang Linh (BI6-086)
 
 Dang Vinh Bao (BI6-017)
 
-Phung Duc Tuan (BI5-045)
+Phung Duc Tuan (BI5-145)
 
 Nguyen Thanh Long (BI6-088)
