@@ -1,0 +1,4 @@
+/proc/1419/task/1437/net/dev_snmp6
+/proc/1419/task/1437/net/dev_snmp6/lo
+/proc/1419/task/1437/net/dev_snmp6/wlp2s0
+/proc/1419/task/1437/net/dev_snmp6/enp3s0f1

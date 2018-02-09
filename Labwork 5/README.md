@@ -1,5 +1,5 @@
 
-#Instruction the same as Labwork 4
+#Instruction similar to Labwork 4
 
 ## IDE
 We use Netbeans IDE to build the project because Netbeans is a powerful java IDE developed by oracle
@@ -32,7 +32,7 @@ Run the project: general case
 	hadoop jar *".jar file name"* *"input folder name"* *"output folder name"*
 In our case:
 
-	hadoop jar MapReduceTest1.jar Input Output
+	hadoop jar MR_LongestPath.jar Input Output
 
 Use: 
 

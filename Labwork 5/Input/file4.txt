@@ -1,0 +1,5 @@
+/home/dangvinhbao/Android/Sdk/extras/google/m2repository/com/google/firebase
+/home/dangvinhbao/Android/Sdk/extras/google/m2repository/com/google/firebase/firebase-invites
+/home/dangvinhbao/Android/Sdk/extras/google/m2repository/com/google/firebase/firebase-invites/maven-metadata.xml.md5
+/home/dangvinhbao/Android/Sdk/extras/google/m2repository/com/google/firebase/firebase-invites/10.2.4
+
