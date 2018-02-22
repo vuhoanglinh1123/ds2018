@@ -63,7 +63,7 @@ sudo gluster volume create <VOL_NAME> replica <INT> transport tcp <HOSTNAME>:<BR
 For instance:
 
 ```
-sudo gluster volume create test-volume replica 3 transport tcp 192.168.10.250:/home/dangvinhbao/data/gluster/gv0 192.168.11.23:/home/vhlinh/data/gluster/gv0 192.168.11.0:/home/tuan/data/gluster/gv0 force
+sudo gluster volume create test-volume replica 3 transport tcp 192.168.88.31:/home/dangvinhbao/data/brick1/gv0 192.168.11.0:/home/tuan/data/brick1/gv0 force
 ```
 Start the Volume.
 
@@ -95,7 +95,7 @@ mount -t glusterfs <HOSTNAME>:/<VOL_NAME> <MOUNT_DIR>
 For instance:
 
 ```
-mount -t glusterfs 192.168.11.23:/test-volume ~/mnt/glusterfs
+mount -t glusterfs 192.168.88.31:/gv0 /mnt
 ```
 
 Verify the mounted GlusterFS filesystem.
