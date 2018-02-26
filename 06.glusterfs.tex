@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Word count report}
+\date{February 2018}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Commands}
+\begin{lstlisting}
+\textbf{Install GlusterFS}\\
+Add the GlusterFS PPA repository (version 3.10.x) and update.\\
+Note: All peers must have the same version of GlusterFS.\\
+sudo add-apt-repository ppa:gluster/glusterfs-3.10\\
+sudo apt-get update\\
+Install GlusterFS package.\\
+sudo apt-get install -y glusterfs-server\\
+Configure the firewall\\
+sudo iptables -I INPUT -p all -s <ip-address> -j ACCEPT\\
+\\
+\textbf{Make a Trusted Pool}\\
+Get the server IP Address.\\
+hostname -I\\
+Add servers to the Trusted Pool\\
+sudo gluster peer probe <ip-address>\\
+Check the peer status\\
+sudo gluster peer status\\
+\\
+\\
+\textbf{Create a Distributed Replicated Volume}\\
+\\
+\textbf{Add a Storage}\\
+For each node, make a folder in the /home directory to act as a Brick (ex. ~/data/gluster).\\
+\\
+\textbf{Setup a Volume}\\
+Create a Brick in each node (ex. ~/data/gluster/gv0).\\
+Create a Distributed Replicated Volume.\\
+sudo gluster volume create <VOL_NAME> replica <INT> transport tcp\\ <HOSTNAME>:<BRICK_PATH>... force\\
+For instance:\\
+sudo gluster volume create test-volume replica 3 transport tcp\\ 192.168.88.31:/home/dangvinhbao/data/brick1/gv0\\ 192.168.11.0:/home/tuan/data/brick1/gv0 force\\
+Start the Volume.\\
+sudo gluster volume start <VOL_NAME>\\
+Check the Volume status.\\
+sudo gluster volume info <VOL_NAME>\\
+\\
+\textbf{Setup the Client}\\
+Install the GlusterFS Client.
+sudo apt-get install -y glusterfs-client\\
+Create a directory to mount the GlusterFS filesystem (ex. ~/mnt/glusterfs).\\
+Mount the GlusterFS filesystem to the Client.\\
+mount -t glusterfs <HOSTNAME>:/<VOL_NAME> <MOUNT_DIR>\\
+For instance:\\
+mount -t glusterfs 192.168.88.31:/gv0 /mnt\\
+Verify the mounted GlusterFS filesystem.\
+# df -h <MOUNT_DIR>\\
+\end{lstlisting}
+
+\section{Perform benchmarks}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{06.mount_client1_a.png}
+\caption{06.mount_client1_a.png}
+\label{fig:glusterfsfigure}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{06.mount_client1_b.png}
+\caption{06.mount_client1_b.png}
+\label{fig:glusterfsfigure}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{06.mount_client1_c.png}
+\caption{06.mount_client1_c.png}
+\label{fig:glusterfsfigure}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{06.mount_client1_d.png}
+\caption{06.mount_client1_d.png}
+\label{fig:glusterfsfigure}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{mount_client2.png}
+\caption{mount_client2.png}
+\label{fig:glusterfsfigure}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{mpbs_three_server_1.png}
+\caption{mpbs_three_server_1.png}
+\label{fig:glusterfsfigure}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{mpbs_three_server_2.png}
+\caption{mpbs_three_server_2.png}
+\label{fig:glusterfsfigure}
+\end{figure}
+
+\section{Who does what?}
+Clients and servers: Dang Vinh Bao, Vu Hoang Linh, Nguyen Thanh Long, Phung Duc Tuan
+Report and misc.: Nguyen Thanh Long, Phung Duc Tuan
+
+\end{document}
