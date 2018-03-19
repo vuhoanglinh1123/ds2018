@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 import java.io.OutputStream;
 import java.util.List;
 
+import clientwatchservice.*;
+
 
 /**
  *

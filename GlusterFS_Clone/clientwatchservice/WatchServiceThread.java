@@ -46,7 +46,7 @@ public class WatchServiceThread extends Thread{
                     StandardWatchEventKinds.ENTRY_MODIFY,    
                     StandardWatchEventKinds.ENTRY_DELETE);
         } catch (IOException ex) {
-            Logger.getLogger(ClientWatchService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WatchServiceThread.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         //infinite loop
